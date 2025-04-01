@@ -85,7 +85,10 @@
 - **Ehdot**: Käyttäjä voi laittaa tehtävän työn alle vain, jos tehtävän tila ei ole jo "Valmis".
 
 ## 3. UI Prototypes
-(Lisää kuvaus ja linkki prototyypille, jos se on olemassa.)
+
+https://www.figma.com/design/2vH9JgW7ot9Bd3vLS0Cndw/Task-List?node-id=1-65&t=X55h5XsDMOX442LR-1
+
+
 
 ## 4. Information Architecture and Technical Design
 Tietorakenteet:
