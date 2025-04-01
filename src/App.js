@@ -1,41 +1,100 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
+  // Alustetaan tehtävälista käyttäen localStoragea
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
 
-  const handleAddTask = (event) => {
-    event.preventDefault();
-    if (newTask.trim()) {
-      setTasks([...tasks, newTask]);
-      setNewTask('');
-    }
-  };
+  // Alustetaan muokattavan tehtävän tila
+  const [editingTask, setEditingTask] = useState(null);
 
-  const handleDeleteTask = (index) => {
-    const updatedTasks = tasks.filter((task, taskIndex) => taskIndex !== index);
+  // Alustetaan uuden tehtävän luomisen kentät
+  const [newTask, setNewTask] = useState({ name: "", description: "", status: "PENDING" });
+
+  // Funktio tehtävän tilan päivittämiseen
+  const updateTaskStatus = (taskId, newStatus) => {
+    const updatedTasks = tasks.map(task =>
+      task.id === taskId ? { ...task, status: newStatus } : task
+    );
     setTasks(updatedTasks);
   };
 
+  // Funktio tehtävän muokkaamiseen
+  const handleEditTask = (taskId) => {
+    const taskToEdit = tasks.find(task => task.id === taskId);
+    setEditingTask(taskToEdit);
+  };
+
+  const handleSaveEditedTask = () => {
+    const updatedTasks = tasks.map(task =>
+      task.id === editingTask.id ? { ...editingTask } : task
+    );
+    setTasks(updatedTasks);
+    setEditingTask(null);
+  };
+
+  // Funktio uuden tehtävän lisäämiseen
+  const handleAddTask = () => {
+    const newTaskWithId = { ...newTask, id: tasks.length + 1 };
+    const updatedTasks = [...tasks, newTaskWithId];
+    setTasks(updatedTasks);
+  };
+
+  // Tallennetaan tehtävät localStorageen aina kun tehtävälista päivittyy
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
   return (
-    <div className="App">
-      <h1>Task List</h1>
-      
-      <form onSubmit={handleAddTask}>
+    <div>
+      <h1>Tehtävälista</h1>
+
+      {/* Tehtävän luominen */}
+      <div>
         <input
           type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          placeholder="Add a new task"
+          placeholder="Tehtävän nimi"
+          value={newTask.name}
+          onChange={(e) => setNewTask({ ...newTask, name: e.target.value })}
         />
-        <button type="submit">Add Task</button>
-      </form>
+        <input
+          type="text"
+          placeholder="Tehtävän kuvaus"
+          value={newTask.description}
+          onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+        />
+        <button onClick={handleAddTask}>Lisää tehtävä</button>
+      </div>
 
+      {/* Tehtävälista */}
       <ul>
-        {tasks.map((task, index) => (
-          <li key={index}>
-            {task}
-            <button onClick={() => handleDeleteTask(index)}>Delete</button>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            {/* Näytetään muokkauslomake, jos tehtävää ollaan muokkaamassa */}
+            {editingTask?.id === task.id ? (
+              <div>
+                <input
+                  type="text"
+                  value={editingTask.name}
+                  onChange={(e) => setEditingTask({ ...editingTask, name: e.target.value })}
+                />
+                <input
+                  type="text"
+                  value={editingTask.description}
+                  onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
+                />
+                <button onClick={handleSaveEditedTask}>Tallenna</button>
+              </div>
+            ) : (
+              <div>
+                <span>{task.name} - {task.status}</span>
+                <button onClick={() => updateTaskStatus(task.id, 'IN_PROGRESS')}>Aloita</button>
+                <button onClick={() => updateTaskStatus(task.id, 'COMPLETED')}>Valmis</button>
+                <button onClick={() => handleEditTask(task.id)}>Muokkaa tehtävää</button>
+              </div>
+            )}
           </li>
         ))}
       </ul>
