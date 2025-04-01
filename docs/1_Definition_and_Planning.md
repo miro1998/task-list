@@ -1,4 +1,4 @@
-# Käyttäjäpersoonat ja Käyttötapaukset
+# Project Phase 1 - Definition and Planning
 
 ## Käyttäjäpersoonat
 
@@ -83,3 +83,23 @@
     2. Klikkaa tehtävän vieressä olevaa "Aloita" -painiketta.
     3. Tehtävän tila päivittyy "Työn alla" -tilaksi ja tehtävä siirtyy työn alla olevien tehtävien osioon.
 - **Ehdot**: Käyttäjä voi laittaa tehtävän työn alle vain, jos tehtävän tila ei ole jo "Valmis".
+
+## 3. UI Prototypes
+(Lisää kuvaus ja linkki prototyypille, jos se on olemassa.)
+
+## 4. Information Architecture and Technical Design
+Tietorakenteet:
+Sovelluksessa käytetään yksinkertaista tiedonhallintaa, jossa tehtävät tallennetaan paikallisesti selaimen LocalStorage-muistiin. Tiedot tallennetaan JSON-muodossa ja ne sisältävät tehtävän nimen, kuvauksen ja tilan (PENDING, IN_PROGRESS, COMPLETED).
+
+Tekninen suunnitelma:
+Käytetään React-kirjastoa frontendin kehittämiseen, joka mahdollistaa dynaamisen ja reaktiivisen käyttöliittymän. CSS:llä on määritelty sovelluksen ulkoasu, ja LocalStorage:ta hyödynnetään tehtävien tallentamiseen ja hakemiseen.
+
+Käyttöliittymä ja taustajärjestelmä:
+Sovellus toimii ilman erillistä taustapalvelinta, ja kaikki tiedon käsittely tapahtuu suoraan selaimessa LocalStoragea hyödyntäen. Tätä käytetään tietojen tallentamiseen ja hakemiseen, kun käyttäjä lisää, muokkaa tai poistaa tehtäviä.
+
+## 5. Project Management and User Testing
+**Project Management**:
+Projektinhallinta keskittyy aikarajoihin, resurssien käyttöön ja tehtävien hallintaan. Projekti on jaettu vaiheisiin, joissa seurataan edistymistä ja varmistetaan, että aikarajat täyttyvät. Käytetään GitHubia projektin seuraamiseen ja dokumentointiin.
+
+**User Testing**:
+Käyttäjätestaus suoritetaan todellisilla käyttäjillä, jotka arvioivat sovelluksen käytettävyyttä. Testin aikana kerätään palautetta tehtävien lisäämisestä, muokkaamisesta ja poistamisesta sekä tehtävien tilan hallinnasta. Palautteen perusteella tehdään parannuksia sovellukseen.
